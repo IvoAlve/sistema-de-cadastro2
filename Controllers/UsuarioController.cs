@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiteMVC.Filters;
 using SiteMVC.Models;
 using SiteMVC.Repositorio;
 
 namespace SiteMVC.Controllers
 {
+    [PaginaRestritaSomenteAdmin]
+
     public class UsuarioController : Controller
     {
         private readonly IUsuarioRepositorio _usuarioRepositorio;
-        public UsuarioController(IUsuarioRepositorio contatoRepositorio)
+        private readonly IContatoRepositorio _contatoRepositorio;
+
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, IContatoRepositorio contatoRepositorio)
         {
-            _usuarioRepositorio = contatoRepositorio;
+            _usuarioRepositorio = usuarioRepositorio;
+            _contatoRepositorio = contatoRepositorio;
         }
         public IActionResult Index()
         {
@@ -59,6 +65,12 @@ namespace SiteMVC.Controllers
                 return RedirectToAction("Index");
             }
 
+        }
+
+        public IActionResult ListarContatosPorUsuario(int id)
+        {
+            List<ContatoModel> contatos = _contatoRepositorio.BuscarTodos(id);
+            return PartialView("_ContatosUsuario", contatos);
         }
         [HttpPost]
         public IActionResult Criar(UsuarioModel usuario)
@@ -111,4 +123,5 @@ namespace SiteMVC.Controllers
                 return RedirectToAction("Index");
             }
         }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using SiteMVC.Enums;
+using SiteMVC.Helper;
 using System.ComponentModel.DataAnnotations;
 
 namespace SiteMVC.Models
@@ -26,9 +27,27 @@ namespace SiteMVC.Models
 
         public DateTime? DataAtualizacao { get; set; }
 
+        public virtual List<ContatoModel> Contatos { get; set; }
+
         public bool SenhaValida(string senha)
         {
-            return Senha == senha;
+            return Senha == senha.GerarHash();
+        }
+
+        public void SetSenhaHash()
+        {
+            Senha = Senha.GerarHash();
+        }
+        public void SetNovaSenha(string novaSenha)
+        {
+            Senha = novaSenha.GerarHash();
+
+        }
+        public string GerarNovaSenha()
+        {
+            string novaSenha = Guid.NewGuid().ToString().Substring(0, 8);
+            Senha = novaSenha.GerarHash();
+            return novaSenha;
         }
     }
 }

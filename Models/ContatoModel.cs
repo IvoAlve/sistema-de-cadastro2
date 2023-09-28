@@ -13,6 +13,9 @@ namespace SiteMVC.Models
         [Required(ErrorMessage = "Digite o celular do contato")]
         [Phone(ErrorMessage = "Digite um celular válido")]
         public string Celular { get; set;}
+        public int? UsuarioId { get; set; }
+
+        public UsuarioModel Usuario { get; set; }
 
 
     }
